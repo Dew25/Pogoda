@@ -6,6 +6,7 @@
 package pogoda;
 
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.Random;
 public class Pogoda {
     
     static enum Month {
-        Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Ноябрь, Октябрь, Декабрь
+        Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Октябрь, Ноябрь, Декабрь
     };
     /**
      * @param args the command line arguments
@@ -48,26 +49,69 @@ public class Pogoda {
             }
             
         }
-
-        System.out.println("Список температур в 2017 году по дням:");
-        System.out.print("     День: ");
-        for (int i = 0; i < 31; i++) {
-            System.out.printf("%4d",i+1);
-        }
-        System.out.println();
-        System.out.print("           ");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
-
-        
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите номер месяца: ");
+        int month = scanner.nextInt();
+        System.out.print("Введите число указанного месяца: ");
+        int day = scanner.nextInt();
+        System.out.println("--------------------------------");
+        System.out.println("Вы выбрали");
+        System.out.printf("Месяц: %s%nДень: %d%nТемпература в этот день: %d градусов Цельсия%n", Month.values()[month-1],day,year[month-1][day-1]);
+        int maxT=0;
+        int minT=0;
+        String DateMax ="";
+        int dayMax = 0;
+        String DateMin = "";
+        int dayMin = 0;
         for (int i = 0; i < year.length; i++) {
             for (int j = 0; j < year[i].length; j++) {
-                if(j < 1){
-                    System.out.printf("%9s: %4d",Month.values()[i],year[i][j]);
-                }else{
-                    System.out.printf("%4d",year[i][j]);
+                if(maxT < year[i][j]){
+                    maxT = year[i][j];
+                }
+                if(minT > year[i][j]){
+                    minT = year[i][j];
                 }
             }
-            System.out.println();
         }
+        for (int i = 0; i < year.length; i++) {
+            for (int j = 0; j < year[i].length; j++) {
+                if(maxT == year[i][j]){
+                    DateMax += j+1+" "+Month.values()[i]+", ";
+                }
+                if(minT == year[i][j]){
+                    DateMin += j+1+" "+Month.values()[i]+", ";
+                }    
+            }
+        }
+        System.out.println();
+        System.out.println("Самая высокая температура в году: "+maxT+" градусов Цельсия.");
+        System.out.printf("Дата: %s%n",DateMax);
+        System.out.println();
+        System.out.println("Самая низкая температура в году: "+minT+" градусов Цельсия.");
+        System.out.printf("Дата: %s%n",DateMin);
+        System.out.println();
+        
+
+        System.out.println("Средняя температура по месяцам:");
+        System.out.println();
+        System.out.printf("%8s       %20s%n","Месяц","Средняя темпрература");
+        System.out.println("----------------------------------");
+//        for (int i = 0; i < 31; i++) {
+//            System.out.printf("%4d",i+1);
+//        }
+//        System.out.println();
+//        System.out.print("           ");
+//        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        
+        double averageTemperatur = 0.0;
+        for (int i = 0; i < year.length; i++) {
+            for (int j = 0; j < year[i].length; j++) {
+                averageTemperatur += year[i][j];
+            }
+            System.out.printf("%10s  -   %3.1f",Month.values()[i],averageTemperatur/year[i].length);
+            System.out.println();
+            averageTemperatur=0;
+        }
+        System.out.println();
     }
 }
